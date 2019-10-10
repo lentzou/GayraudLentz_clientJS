@@ -1,8 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import {login} from "../API/auth";
 import {withCookies} from "react-cookie";
 import Button from '@material-ui/core/Button';
-import {Container, Grid, TextField} from "@material-ui/core";
+import {Grid, TextField} from "@material-ui/core";
+import { useAuth } from "../Context/auth";
+import {Redirect} from "react-router";
 
 interface IProps {
     cookies: any
@@ -15,51 +17,42 @@ interface IState {
     error?: string
 }
 
-class Login extends React.Component<IProps, IState> {
+function Login(props: IProps) {
+    const [mail, setMail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState();
+    const [token, setToken] = useState(props.cookies.get('token') || "");
+    const { setAuthTokens } = useAuth();
 
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            mail: "",
-            password: "",
-            token: props.cookies.get('token') || ""
-        }
+    if (token) {
+        setAuthTokens(token);
+        return <Redirect to="/chat" />;
     }
 
-    _handleSubmit = () => {
-        login(this.state.mail, this.state.password).then((data) => {
-            this.setState({token: data.token, error: data.msg});
-            // save token in Cookies with react-cookies
-            this.props.cookies.set('token', data.token, '/');
+    function _handleSubmit() {
+        login(mail, password).then(data => {
+            setToken(data.token);
+            setAuthTokens(data.token);
+            setError(data.msg);
         });
-    };
-
-    _handleChange = (value: string, field: string) => {
-        this.setState(prev => ({
-            ...prev,
-            [field]: value
-            })
-        );
-    };
-
-    render()  {
-        return (
-            <Grid container style={{height: "100%"}} direction="column" justify="center" alignItems="center">
-                <TextField label="Email" type="email"
-                    name="email" autoComplete="email"
-                    margin="normal" variant="outlined"
-                    onChange={(event) => {this._handleChange(event.target.value, "mail")}}
-                />
-                <TextField label="Password" type="password"
-                    name="password" margin="normal" variant="outlined"
-                    onChange={(event) => {this._handleChange(event.target.value, "password")}}
-                />
-                {this.state.error && <p>{this.state.error}</p>}
-                <div style={{margin: 20}}/>
-                <Button size="large" variant="contained" color="primary" onClick={() => this._handleSubmit()}>Submit</Button>
-            </Grid>
-        )
     }
+
+    return (
+        <Grid container style={{height: "100%"}} direction="column" justify="center" alignItems="center">
+            <TextField label="Email" type="email"
+                       name="email" autoComplete="email"
+                       margin="normal" variant="outlined"
+                       onChange={(event) => setMail(event.target.value)}
+            />
+            <TextField label="Password" type="password"
+                       name="password" margin="normal" variant="outlined"
+                       onChange={(event) => setPassword(event.target.value)}
+            />
+            <div style={{margin: 20}}/>
+            <Button size="large" variant="contained" color="primary" onClick={() =>_handleSubmit()}>Submit</Button>
+            {error && <p style={{color: 'red'}}>{error}</p>}
+        </Grid>
+    );
 }
 
 export default withCookies(Login);
