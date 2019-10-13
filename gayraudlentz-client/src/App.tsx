@@ -9,6 +9,7 @@ import {
 import { AuthContext } from "./Context/auth";
 import PrivateRoute from "./Views/PrivateRoute";
 import Chat from "./Views/Chat";
+import Register from "./Views/Register";
 
 
 interface IProps {
@@ -33,6 +34,7 @@ function App(props: IProps) {
         <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
             <Router>
                 <Route exact path="/" component={Login} />
+                <Route exact path="/register" component={Register} />
                 <PrivateRoute path="/chat" component={Chat} />
             </Router>
         </AuthContext.Provider>

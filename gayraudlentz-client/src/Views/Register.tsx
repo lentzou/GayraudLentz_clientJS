@@ -1,33 +1,26 @@
-import React, {useState} from "react";
-import {login} from "../API/auth";
-import {withCookies} from "react-cookie";
 import Button from '@material-ui/core/Button';
-import {Grid, TextField} from "@material-ui/core";
-import { useAuth } from "../Context/auth";
-import {Redirect} from "react-router";
-import {Link} from "react-router-dom";
+import { Grid, TextField } from "@material-ui/core";
+import { useState } from "react";
+import { register, error } from "../API/auth";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 interface IProps {
-    cookies: any
+    history: any
 }
 
-function Login(props: IProps) {
+function Register(props: IProps) {
     const [mail, setMail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [error, setError] = useState();
-    const [token, setToken] = useState(props.cookies.get('token') || "");
-    const { setAuthTokens } = useAuth();
-
-    if (token) {
-        setAuthTokens(token);
-        return <Redirect to="/chat" />;
-    }
 
     function _handleSubmit() {
-        login(mail, password).then(data => {
-            setToken(data.token);
-            setAuthTokens(data.token);
-            setError(data.msg);
+        register(mail, password, username).then(data => {
+            setError(data.errors);
+            if (!data.errors) {
+                props.history.push('/');
+            }
         });
     }
 
@@ -42,13 +35,15 @@ function Login(props: IProps) {
                        name="password" margin="normal" variant="outlined"
                        onChange={(event) => setPassword(event.target.value)}
             />
+            <TextField label="Username" type="text"
+                       name="username" margin="normal" variant="outlined"
+                       onChange={(event) => setUsername(event.target.value)}
+            />
             <div style={{margin: 20}}/>
             <Button size="large" variant="contained" color="primary" onClick={() =>_handleSubmit()}>Submit</Button>
-            {error && <p style={{color: 'red'}}>{error}</p>}
-            <div style={{margin: 20}}/>
-            <Link style={{color: 'black'}} to="/register">Not register yet ?</Link>
+            {error && error.map((err: error) => { return (<p key={err.param} style={{color: 'red'}}>{err.msg} {err.param}</p>)})}
         </Grid>
     );
 }
 
-export default withCookies(Login);
+export default withRouter(Register);
