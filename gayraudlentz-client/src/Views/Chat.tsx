@@ -8,6 +8,9 @@ const
 ioClient.on('newConnection', function(message: string) {    
     alert('Le serveur a un message pour vous : ' + message);        
 });
+
+ioClient.emit('pseudo', "pseudo a renseigner");   
+
 ioClient.on('generalMessage', function(message: string) {    
     alert('Quelqun a dit : ' + message);        
 });
