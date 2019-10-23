@@ -10,14 +10,10 @@ import { AuthContext } from "./Context/auth";
 import PrivateRoute from "./Views/PrivateRoute";
 import Chat from "./Views/Chat";
 import Register from "./Views/Register";
-
+import Home from "./Views/Home";
 
 interface IProps {
     cookies: any,
-}
-
-interface IState {
-    token: string,
 }
 
 function App(props: IProps) {
@@ -36,6 +32,7 @@ function App(props: IProps) {
                 <Route exact path="/" component={Login} />
                 <Route exact path="/register" component={Register} />
                 <PrivateRoute path="/chat" component={Chat} />
+                <PrivateRoute path="/home" component={Home} />
             </Router>
         </AuthContext.Provider>
     );

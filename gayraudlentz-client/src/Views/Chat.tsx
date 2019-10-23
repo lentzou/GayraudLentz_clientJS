@@ -5,7 +5,7 @@ interface IProps {
 }
 
 function Chat(props: IProps) {
-    return <div>Admin Page</div>;
+    return <div>Chat Page</div>;
 }
 
 export default Chat;

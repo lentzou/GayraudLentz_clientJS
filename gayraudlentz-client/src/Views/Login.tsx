@@ -20,7 +20,7 @@ function Login(props: IProps) {
 
     if (token) {
         setAuthTokens(token);
-        return <Redirect to="/chat" />;
+        return <Redirect to="/home" />;
     }
 
     function _handleSubmit() {
