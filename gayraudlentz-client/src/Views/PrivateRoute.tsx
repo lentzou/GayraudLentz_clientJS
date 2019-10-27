@@ -5,7 +5,7 @@ import { useAuth } from "../Context/auth";
 // @ts-ignore
 function PrivateRoute({ component: Component, ...rest }) {
     const { authTokens } = useAuth();
-
+    
     return (
         <Route
             {...rest}

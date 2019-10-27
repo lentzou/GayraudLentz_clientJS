@@ -8,7 +8,8 @@ import {Redirect} from "react-router";
 import {Link} from "react-router-dom";
 
 interface IProps {
-    cookies: any
+    cookies: any,
+    history: any
 }
 
 function Login(props: IProps) {
@@ -18,16 +19,15 @@ function Login(props: IProps) {
     const [token, setToken] = useState(props.cookies.get('token') || "");
     const { setAuthTokens } = useAuth();
 
-    if (token) {
-        setAuthTokens(token);
-        return <Redirect to="/home" />;
-    }
+    //TODO redirect to home where there is a token
 
     function _handleSubmit() {
         login(mail, password).then(data => {
             setToken(data.token);
             setAuthTokens(data.token);
             setError(data.msg);
+            if (!!data.token)
+                props.history.push('/home');
         });
     }
 

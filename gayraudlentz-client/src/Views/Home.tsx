@@ -1,5 +1,7 @@
 import React from "react";
 import {useAuth} from "../Context/auth";
+import {Link} from "react-router-dom";
+import {Grid} from "@material-ui/core";
 
 interface IProps {
 
@@ -7,11 +9,12 @@ interface IProps {
 
 function Home(props: IProps) {
 
-    const { authTokens } = useAuth();
-
-    console.log(authTokens);
-
-    return <div>Home Page</div>;
+    return (
+        <Grid container style={{height: "100%"}} direction="column" justify="center" alignItems="center">
+            <Link style={{color: 'black'}} to="/chat">Go to chat</Link>
+            <Link style={{color: 'black'}} to="/profile">Go to profile</Link>
+        </Grid>
+    );
 }
 
 export default Home;

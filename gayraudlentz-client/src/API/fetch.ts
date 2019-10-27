@@ -18,7 +18,7 @@ export async function fetchWrapper(method: methodType, url: string, token: strin
         method: method,
         headers: {
             'Content-Type': 'application/json',
-            'x-auth-token': token,
+            'authorization': token,
         },
         body: body
     })
