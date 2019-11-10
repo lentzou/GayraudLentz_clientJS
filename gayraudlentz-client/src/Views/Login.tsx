@@ -6,6 +6,7 @@ import {Grid, TextField} from "@material-ui/core";
 import { useAuth } from "../Context/auth";
 import {Redirect} from "react-router";
 import {Link} from "react-router-dom";
+import {FormattedMessage} from 'react-intl';
 
 interface IProps {
     cookies: any,
@@ -43,10 +44,10 @@ function Login(props: IProps) {
                        onChange={(event) => setPassword(event.target.value)}
             />
             <div style={{margin: 20}}/>
-            <Button size="large" variant="contained" color="primary" onClick={() =>_handleSubmit()}>Submit</Button>
+            <Button size="large" variant="contained" color="primary" onClick={() =>_handleSubmit()}><FormattedMessage id="login.login"/></Button>
             {error && <p style={{color: 'red'}}>{error}</p>}
             <div style={{margin: 20}}/>
-            <Link style={{color: 'black'}} to="/register">Not register yet ?</Link>
+            <Link style={{color: 'black'}} to="/register"><FormattedMessage id="login.register"/></Link>
         </Grid>
     );
 }

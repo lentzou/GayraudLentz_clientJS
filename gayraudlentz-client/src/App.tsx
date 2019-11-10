@@ -14,6 +14,8 @@ import Chat from "./Views/Chat";
 import Register from "./Views/Register";
 import Home from "./Views/Home";
 import Profile from "./Views/Profile";
+import {IntlProvider} from 'react-intl';
+import global from './global';
 
 interface IProps {
     cookies: any,
@@ -30,6 +32,7 @@ function App(props: IProps) {
     };
 
     return (
+        <IntlProvider locale="en-EN" messages={global["en-EN"]}>
         <ThemeProvider>
         <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
             <Router>
@@ -41,6 +44,7 @@ function App(props: IProps) {
             </Router>
         </AuthContext.Provider>
         </ThemeProvider>
+        </IntlProvider>
     );
 }
 

@@ -5,9 +5,8 @@ import { MessageList, Message, MessageText } from "@livechat/ui-kit";
 import { useAuth } from "../Context/auth";
 import { getMyInfos, userInfos } from '../API/user';
 // @ts-ignore
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+import SideNav, { NavItem, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import useForceUpdate from 'use-force-update';
 
 
 const io = require("socket.io-client");
@@ -82,7 +81,7 @@ function Chat() {
         getMyInfos(authTokens).then((infos) => {
             setUsersInfos(infos);
         });
-
+        
     return (
         <div>
             <SideNav
